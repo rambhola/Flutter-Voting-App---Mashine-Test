@@ -4,10 +4,14 @@ import 'package:the_statup_idea_evaluator_ai_votting_app/navbar/views/bottom_nav
 import 'package:the_statup_idea_evaluator_ai_votting_app/navbar/views_model/nav_controller.dart';
 import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/submission_screen.dart';
 import 'package:get/get.dart';
+import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views_model/idea_controller.dart';
+import 'package:the_statup_idea_evaluator_ai_votting_app/theme/views%20model/theme_controller.dart';
 
 void main() {
   //This ensures the controller is created globally before any screen loads.
   Get.put(NavController());
+  Get.put(IdeaController());
+  Get.put(ThemeController());
   runApp(const MyApp());
 }
 

@@ -6,6 +6,8 @@ import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/leaderboa
 import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/listing_screen.dart';
 import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/submission_screen.dart';
 
+import '../../theme/views/setting_page.dart';
+
 class BottomNav extends StatelessWidget {
   int? navIndex;
   BottomNav({super.key, this.navIndex});
@@ -19,6 +21,7 @@ class BottomNav extends StatelessWidget {
       });
     }
     return Scaffold(
+
       body: Obx(
         () => IndexedStack(
           index: navController.selectedIndex.value.clamp(0, 2),
