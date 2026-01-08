@@ -5,6 +5,7 @@ import 'package:the_statup_idea_evaluator_ai_votting_app/navbar/views_model/nav_
 import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/submission_screen.dart';
 import 'package:get/get.dart';
 import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views_model/idea_controller.dart';
+import 'package:the_statup_idea_evaluator_ai_votting_app/shared_prefrences/views_model/form_controller.dart';
 import 'package:the_statup_idea_evaluator_ai_votting_app/theme/views%20model/theme_controller.dart';
 
 void main() {
@@ -12,6 +13,8 @@ void main() {
   Get.put(NavController());
   Get.put(IdeaController());
   Get.put(ThemeController());
+  Get.lazyPut<FormController>(() => FormController(),fenix: true,);
+
   runApp(const MyApp());
 }
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../theme/views model/theme_controller.dart';
+import '../../widgets/read_more_text.dart';
 import '../views_model/idea_controller.dart';
 
 class ListingScreen extends StatelessWidget {
@@ -335,18 +336,18 @@ class _IdeaCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          idea.description.toString(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                            color: themeController.isDarkModeValue
-                                ? Colors.black87
-                                : Colors.white,
-                          ),
+                      ReadMoreText(
+                        text: idea.description.toString(),
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: themeController.isDarkModeValue
+                              ? Colors.black87
+                              : Colors.white,
                         ),
+                      ),
+
 
                         const SizedBox(height: 8),
 

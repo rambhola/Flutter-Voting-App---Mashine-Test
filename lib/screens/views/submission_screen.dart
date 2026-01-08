@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/listing_screen.dart';
 import 'package:get/get.dart';
+import 'package:the_statup_idea_evaluator_ai_votting_app/shared_prefrences/views_model/form_controller.dart';
 import 'package:the_statup_idea_evaluator_ai_votting_app/theme/views%20model/theme_controller.dart';
 import 'dart:math';
 
+import '../../shared_prefrences/views_model/form_data_model.dart';
 import '../../theme/views/setting_page.dart';
 import '../views_model/idea_controller.dart';
 
@@ -17,11 +19,29 @@ class SubmissionScreen extends StatefulWidget {
 
 class _SubmissionScreenState extends State<SubmissionScreen> {
   final IdeaController ctr = Get.find<IdeaController>();
+  final FormController formController = Get.find<FormController>();
+
   final _formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
   final taglineController = TextEditingController();
   final descController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    ever<FormDataModel?>(
+      formController.formData,
+          (data) {
+        if (data != null) {
+          nameController.text = data.title;
+          taglineController.text = data.tagline;
+          descController.text = data.description;
+        }
+      },
+    );
+  }
 
 
   @override
@@ -73,11 +93,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 elevation: 8,
-                child: Icon(
-                  Icons.more_vert,
-                  color: Colors.white,
-                  size: 28.sp,
-                ),
+                child: Icon(Icons.more_vert, color: Colors.white, size: 28.sp),
                 itemBuilder: (_) => [
                   PopupMenuItem(
                     child: Center(child: Text("Setting")),
@@ -270,7 +286,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10.h),
+                    SizedBox(height: 5.h),
                     //Form Submission Button
                     Container(
                       height: 55.h,
@@ -345,7 +361,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                       final newIdea = IdeaModel(
                                         tagline: taglineController.text.trim(),
                                         title: nameController.text.trim(),
-                                        description:  descController.text.trim(),
+                                        description: descController.text.trim(),
                                         score: aiRating,
                                         totalVotes: 0,
                                         gradient: const LinearGradient(
@@ -356,6 +372,17 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                         ),
                                       );
                                       ctr.addIdea(newIdea);
+                                      await formController.saveFormData(
+                                        FormDataModel(
+                                          title: nameController.text.trim(),
+                                          tagline: taglineController.text.trim(),
+                                          description: descController.text.trim(),
+                                          score: 0,
+                                          totalVotes: 0,
+                                        ),
+                                      );
+
+                                      formController.saveFormData;
 
                                       ScaffoldMessenger.of(
                                         context,
@@ -377,15 +404,17 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                         ),
                                       );
 
-
-                                      // Clear form
-                                      nameController.clear();
-                                      taglineController.clear();
-                                      descController.clear();
+                                      // // Clear form
+                                      // nameController.clear();
+                                      // taglineController.clear();
+                                      // descController.clear();
+                                      //
+                                      // ScaffoldMessenger.of(context).showSnackBar(
+                                      //   SnackBar(content: Text("Form data cleared")),
+                                      // );
 
                                       // Navigate AFTER submit
                                       Get.to(() => const ListingScreen());
-
                                     }
                                   },
                                   child: Center(
