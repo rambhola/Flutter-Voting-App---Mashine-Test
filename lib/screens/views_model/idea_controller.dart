@@ -9,17 +9,23 @@ class IdeaModel {
   final String tagline;
   final String description;
   final int score;
-  final int totalVotes;
+  int rank;
+  int votes;
   final Gradient gradient;
+  Color? medalColor;
+  String badge;
   bool isFavorite;
 
   IdeaModel({
     required this.title,
     required this.tagline,
     required this.description,
-    required this.score,
-    required this.totalVotes,
+     this.score = 0,
+    this.rank = 0,
+    required this.badge,
+    this.votes = 0,
     required this.gradient,
+
     this.isFavorite = false,
   });
 
@@ -29,7 +35,9 @@ class IdeaModel {
       'tagline': tagline,
       'description': description,
       'score': score,
-      'totalVotes': totalVotes,
+      'totalVotes': votes,
+      'rank': rank,
+      'badge': badge,
       'isFavorite': isFavorite,
     };
   }
@@ -40,25 +48,33 @@ class IdeaModel {
       tagline: json['tagline'],
       description: json['description'],
       score: json['score'],
-      totalVotes: json['totalVotes'],
+      rank: json['rank'],
+      badge: json['badge'],
+
+      votes: json['votes'],
       gradient: LinearGradient(
         colors: [Colors.deepPurple, Colors.blue],
       ), // default gradient
-      isFavorite: json['isFavorite'] ?? false,
+      isFavorite: json['isFavorite'],
     );
   }
 }
 
 class IdeaController extends GetxController {
+  final RxSet<String> votesIdeas = <String>{}.obs;
+  static const String _voteKey = 'votes_idea';
   final RxList<IdeaModel> ideas = <IdeaModel>[].obs;
   final RxString searchText = ''.obs;
   final RxBool sortByRating = true.obs;
+  final RxBool sortByVotes = false.obs;
+
 
   static const String _storageKey = 'ideas_list';
 
   @override
   void onInit() {
     super.onInit();
+    loadVotes();
     loadIdeas();
   }
 
@@ -67,11 +83,38 @@ class IdeaController extends GetxController {
     saveIdeas();
   }
 
+  //update idea
+  void updateIdea(IdeaModel updateIdea) {
+    final index = ideas.indexWhere(
+          (idea) => idea.title == updateIdea.title,
+    );
+
+    if (index != -1) {
+      ideas[index] = updateIdea;
+      ideas.refresh();
+      saveIdeas();
+    }
+  }
+
+
   void toggleFavorite(IdeaModel idea) {
     idea.isFavorite = !idea.isFavorite;
     ideas.refresh();
     saveIdeas();
   }
+
+
+  void voteIdea(IdeaModel idea){
+    if(votesIdeas.contains(idea.title)){
+      Get.snackbar("Already Voted", 'You can vote only once');
+      return;
+    }
+    idea.votes++;
+    votesIdeas.add(idea.title);
+    saveVotes();
+    saveIdeas();
+  }
+
 
   Future<void> saveIdeas() async {
     final prefs = await SharedPreferences.getInstance();
@@ -88,6 +131,17 @@ class IdeaController extends GetxController {
       ideas.assignAll(decoded.map((e) => IdeaModel.fromJson(e)).toList());
     }
   }
+  Future<void> loadVotes() async {
+    final prefs = await SharedPreferences.getInstance();
+    final list = prefs.getStringList(_voteKey) ?? [];
+    votesIdeas.addAll(list);
+  }
+
+  Future<void> saveVotes() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(_voteKey, votesIdeas.toList());
+  }
+
 
   Future<void> clearIdeas() async {
     final prefs = await SharedPreferences.getInstance();

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:the_statup_idea_evaluator_ai_votting_app/navbar/views/bottom_nav.dart';
 import 'package:the_statup_idea_evaluator_ai_votting_app/navbar/views_model/nav_controller.dart';
-import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/submission_screen.dart';
 import 'package:get/get.dart';
 import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views_model/idea_controller.dart';
 import 'package:the_statup_idea_evaluator_ai_votting_app/shared_prefrences/views_model/form_controller.dart';
@@ -56,7 +55,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           themeMode: ThemeMode.system,
-          home: BottomNav(),
+          home: BottomNavScreen(),
         );
       },
     );

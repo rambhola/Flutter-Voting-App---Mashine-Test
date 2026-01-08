@@ -31,18 +31,14 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
   void initState() {
     super.initState();
 
-    ever<FormDataModel?>(
-      formController.formData,
-          (data) {
-        if (data != null) {
-          nameController.text = data.title;
-          taglineController.text = data.tagline;
-          descController.text = data.description;
-        }
-      },
-    );
+    ever<FormDataModel?>(formController.formData, (data) {
+      if (data != null) {
+        nameController.text = data.title;
+        taglineController.text = data.tagline;
+        descController.text = data.description;
+      }
+    });
   }
-
 
   @override
   void dispose() {
@@ -288,6 +284,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                     ),
                     SizedBox(height: 5.h),
                     //Form Submission Button
+
                     Container(
                       height: 55.h,
                       width: 330.w,
@@ -314,6 +311,23 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                 child: InkWell(
                                   onTap: () async {
                                     if (_formKey.currentState!.validate()) {
+                                      //check for dublicate startup names first
+                                      final alreadyExists = ctr.ideas.any(
+                                        (e) =>
+                                            e.title.toLowerCase() ==
+                                            nameController.text
+                                                .trim()
+                                                .toLowerCase(),
+                                      );
+
+                                      if (alreadyExists) {
+                                        Get.snackbar(
+                                          'Duplicate Idea',
+                                          'This startup already exists',
+                                        );
+                                        return;
+                                      }
+
                                       final random = Random();
                                       int aiRating = random.nextInt(101);
 
@@ -363,7 +377,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                         title: nameController.text.trim(),
                                         description: descController.text.trim(),
                                         score: aiRating,
-                                        totalVotes: 0,
+                                        badge: '⭐',
                                         gradient: const LinearGradient(
                                           colors: [
                                             Color(0xff7F00FF),
@@ -375,44 +389,46 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                       await formController.saveFormData(
                                         FormDataModel(
                                           title: nameController.text.trim(),
-                                          tagline: taglineController.text.trim(),
-                                          description: descController.text.trim(),
+                                          tagline: taglineController.text
+                                              .trim(),
+                                          description: descController.text
+                                              .trim(),
                                           score: 0,
                                           totalVotes: 0,
                                         ),
                                       );
 
-                                      formController.saveFormData;
-
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(
-                                          content: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.check_circle,
-                                                color: Colors.white,
-                                              ),
-                                              SizedBox(width: 12.w),
-                                              Text(
-                                                "Idea submitted successfully!",
-                                              ),
-                                            ],
-                                          ),
-                                          backgroundColor: Color(0xFF00D284),
+                                      Get.snackbar(
+                                        'Success',
+                                        'Idea submitted successfully!',
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Color(0xFF00D284),
+                                        colorText: Colors.white,
+                                        margin: EdgeInsets.all(16.w),
+                                        borderRadius: 16.r,
+                                        duration: Duration(seconds: 3),
+                                        icon: Icon(
+                                          Icons.check_circle,
+                                          color: Colors.white,
                                         ),
+                                        shouldIconPulse: true,
+                                        snackStyle: SnackStyle.FLOATING,
                                       );
 
-                                      // // Clear form
-                                      // nameController.clear();
-                                      // taglineController.clear();
-                                      // descController.clear();
-                                      //
-                                      // ScaffoldMessenger.of(context).showSnackBar(
-                                      //   SnackBar(content: Text("Form data cleared")),
-                                      // );
 
+                                      // Clear form
+                                      nameController.clear();
+                                      taglineController.clear();
+                                      descController.clear();
+
+                                      Get.snackbar(
+                                        'Success',
+                                        'Form data cleared',
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Colors.green,
+                                        colorText: Colors.white,
+                                        duration: Duration(seconds: 2),
+                                      );
                                       // Navigate AFTER submit
                                       Get.to(() => const ListingScreen());
                                     }

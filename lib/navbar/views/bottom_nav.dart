@@ -6,11 +6,10 @@ import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/leaderboa
 import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/listing_screen.dart';
 import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/submission_screen.dart';
 
-import '../../theme/views/setting_page.dart';
 
-class BottomNav extends StatelessWidget {
-  int? navIndex;
-  BottomNav({super.key, this.navIndex});
+class BottomNavScreen extends StatelessWidget {
+ final int? navIndex;
+  const BottomNavScreen({super.key, this.navIndex});
 
   @override
   Widget build(BuildContext context) {
