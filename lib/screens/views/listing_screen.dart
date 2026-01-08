@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -251,6 +252,16 @@ class _IdeaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    if (kDebugMode) {
+      print("Title : ${idea.title}");
+      print("Tagline: ${idea.tagline!}");
+      print("Description: ${idea.description!}");
+    }
+    else{
+      print("Data Not Passed By Submission Screen");
+    }
+
     return Obx(() {
       return GestureDetector(
         onTap: () {
@@ -313,6 +324,19 @@ class _IdeaCard extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           idea.tagline.toString(),
+                          maxLines: 200,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                            color: themeController.isDarkModeValue
+                                ? Colors.black87
+                                : Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          idea.description.toString(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -325,6 +349,7 @@ class _IdeaCard extends StatelessWidget {
                         ),
 
                         const SizedBox(height: 8),
+
                         Row(children: [_badge('⭐ ${idea.score}/100')]),
                       ],
                     ),

@@ -23,29 +23,6 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
   final taglineController = TextEditingController();
   final descController = TextEditingController();
 
-  // //All submmited ideas
-  // List<Map<String, dynamic>> ideaList = [];
-  //
-  // final List<IdeaModel> submittedIdeas = [];
-
-  final TextEditingController ideaController = TextEditingController();
-
-  void onSubmitIdea() {
-    if (ideaController.text.isEmpty) return;
-
-    // Create idea from form
-    final newIdea = IdeaModel(
-      tagline: ideaController.text.trim(),
-      title: ideaController.text.trim(),
-      score: 0,
-      totalVotes: 0,
-      gradient: const LinearGradient(
-        colors: [Color(0xff7F00FF), Color(0xff3F8EFC)],
-      ),
-    );
-
-    ctr.ideas.add(newIdea);
-  }
 
   @override
   void dispose() {
@@ -366,8 +343,9 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                       );
 
                                       final newIdea = IdeaModel(
-                                        tagline: ideaController.text.trim(),
+                                        tagline: taglineController.text.trim(),
                                         title: nameController.text.trim(),
+                                        description:  descController.text.trim(),
                                         score: aiRating,
                                         totalVotes: 0,
                                         gradient: const LinearGradient(
@@ -377,7 +355,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                           ],
                                         ),
                                       );
-                                      ctr.ideas.add(newIdea);
+                                      ctr.addIdea(newIdea);
 
                                       ScaffoldMessenger.of(
                                         context,
@@ -398,9 +376,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                           backgroundColor: Color(0xFF00D284),
                                         ),
                                       );
-                                      Future.delayed(Duration(seconds: 3), () {
-                                        Get.to(ListingScreen());
-                                      });
+
 
                                       // Clear form
                                       nameController.clear();
@@ -410,7 +386,6 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                       // Navigate AFTER submit
                                       Get.to(() => const ListingScreen());
 
-                                      ideaController.clear();
                                     }
                                   },
                                   child: Center(
