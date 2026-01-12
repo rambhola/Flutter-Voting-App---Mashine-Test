@@ -15,7 +15,7 @@ class LeaderboardScreen extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF8B5CF6), // Vibrant purple [file:2]
+              Color(0xFF8B5CF6),
               Color(0xFF6B46C1),
               Color(0xFF553C9A),
             ],
