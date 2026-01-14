@@ -13,7 +13,7 @@ class IdeaModel {
   int votes;
   final Gradient gradient;
   Color? medalColor;
-  String badge;
+  String? badge;
   bool isFavorite;
 
   IdeaModel({
