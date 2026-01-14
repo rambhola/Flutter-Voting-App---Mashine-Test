@@ -18,8 +18,7 @@ class ListingScreen extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final bool isLandscape =
-            constraints.maxWidth > constraints.maxHeight;
+        final bool isLandscape = constraints.maxWidth > constraints.maxHeight;
 
         return Obx(() {
           return Scaffold(
@@ -27,7 +26,6 @@ class ListingScreen extends StatelessWidget {
                 ? Colors.grey[900]!
                 : const Color(0xFFF4F6FB),
 
-            // ================= APP BAR =================
             appBar: AppBar(
               title: SizedBox(
                 width: isLandscape ? 0.45.sw : 0.65.sw,
@@ -83,7 +81,6 @@ class ListingScreen extends StatelessWidget {
               ),
             ),
 
-            // ================= BODY =================
             body: Column(
               children: [
                 _SearchAndSortBar(
@@ -94,21 +91,22 @@ class ListingScreen extends StatelessWidget {
 
                 Expanded(
                   child: Obx(() {
-                    final filtered = ctrl.ideas
-                        .where(
-                          (idea) => idea.title
-                          .toLowerCase()
-                          .contains(ctrl.searchText.value.toLowerCase()),
-                    )
-                        .toList()
-                      ..sort((a, b) {
-                        if (ctrl.sortByVotes.value) {
-                          return b.votes.compareTo(a.votes);
-                        }
-                        return ctrl.sortByRating.value
-                            ? b.score.compareTo(a.score)
-                            : a.title.compareTo(b.title);
-                      });
+                    final filtered =
+                        ctrl.ideas
+                            .where(
+                              (idea) => idea.title.toLowerCase().contains(
+                                ctrl.searchText.value.toLowerCase(),
+                              ),
+                            )
+                            .toList()
+                          ..sort((a, b) {
+                            if (ctrl.sortByVotes.value) {
+                              return b.votes.compareTo(a.votes);
+                            }
+                            return ctrl.sortByRating.value
+                                ? b.score.compareTo(a.score)
+                                : a.title.compareTo(b.title);
+                          });
 
                     if (filtered.isEmpty) {
                       return Center(
@@ -139,8 +137,7 @@ class ListingScreen extends StatelessWidget {
                           child: IdeaCard(
                             idea: idea,
                             index: index + 1,
-                            onFavorite: () =>
-                                ctrl.toggleFavorite(idea),
+                            onFavorite: () => ctrl.toggleFavorite(idea),
                           ),
                         );
                       },
@@ -156,8 +153,7 @@ class ListingScreen extends StatelessWidget {
   }
 }
 
-
-// ================= SEARCH + SORT BAR =================
+// SEARCH + SORT BAR
 
 class _SearchAndSortBar extends StatelessWidget {
   final IdeaController ctrl;
@@ -174,106 +170,111 @@ class _SearchAndSortBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // -------- Search Bar --------
-        // Align(
-        //   alignment: Alignment.center,
-        //   child: SizedBox(
-        //     width: isLandscape ? 0.70.sw : 0.90.sw, // 👈 control width here
-        //     child: Container(
-        //       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
-        //       decoration: BoxDecoration(
-        //         color: themeController.isDarkModeValue
-        //             ? Colors.grey[800]!
-        //             : Colors.white,
-        //         borderRadius: BorderRadius.circular(25),
-        //         boxShadow: [
-        //           BoxShadow(
-        //             color: Colors.black.withValues(
-        //               alpha: themeController.isDarkModeValue ? 0.3 : 0.10,
-        //             ),
-        //             blurRadius: 8,
-        //             offset: const Offset(0, 4),
-        //           ),
-        //         ],
-        //       ),
-        //       child: Row(
-        //         children: [
-        //           Icon(
-        //             Icons.search,
-        //             size: 24.sp,
-        //             color: themeController.isDarkModeValue
-        //                 ? Colors.white70
-        //                 : Colors.grey.shade700,
-        //           ),
-        //           SizedBox(width: 12.w),
-        //           Expanded(
-        //             child: TextField(
-        //               decoration: const InputDecoration(
-        //                 hintText: 'Search ideas',
-        //                 border: InputBorder.none,
-        //               ),
-        //               onChanged: (value) => ctrl.searchText.value = value,
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ),
-        // ),
+       //  Search Bar Widget
+        SizedBox(height: 12.h,),
 
-        SizedBox(height: isLandscape ? 8.h : 16.h),
+        Align(
+          alignment: Alignment.center,
+          child: SizedBox(
+            width: isLandscape ? 0.70.sw : 0.90.sw,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+              decoration: BoxDecoration(
+                color: themeController.isDarkModeValue
+                    ? Colors.grey[800]!
+                    : Colors.white,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(
+                      alpha: themeController.isDarkModeValue ? 0.3 : 0.10,
+                    ),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.search,
+                    size: 24.sp,
+                    color: themeController.isDarkModeValue
+                        ? Colors.white70
+                        : Colors.grey.shade700,
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Search ideas',
+                        border: InputBorder.none,
+                      ),
+                      onChanged: (value) => ctrl.searchText.value = value,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
 
-        // -------- Sort Button --------
-        // Align(
-        //   alignment: Alignment.centerLeft,
-        //   child: SizedBox(
-        //     width: isLandscape ? 0.45.sw : 0.50.sw,
-        //     child: GestureDetector(
-        //       onTap: () => ctrl.sortByRating.value = !ctrl.sortByRating.value,
-        //       child: Obx(
-        //         () => Container(
-        //           padding: const EdgeInsets.symmetric(
-        //             horizontal: 14,
-        //             vertical: 10,
-        //           ),
-        //           decoration: BoxDecoration(
-        //             color: themeController.isDarkModeValue
-        //                 ? Colors.grey[800]!
-        //                 : Colors.white,
-        //             borderRadius: BorderRadius.circular(20),
-        //             boxShadow: [
-        //               BoxShadow(
-        //                 color: Colors.black.withValues(
-        //                   alpha: themeController.isDarkModeValue ? 0.3 : 0.10,
-        //                 ),
-        //                 blurRadius: 8,
-        //                 offset: const Offset(0, 4),
-        //               ),
-        //             ],
-        //           ),
-        //           child: Row(
-        //             mainAxisSize: MainAxisSize.min,
-        //             children: [
-        //               Icon(Icons.sort, size: 18.sp),
-        //               const SizedBox(width: 8),
-        //               Text(
-        //                 ctrl.sortByRating.value
-        //                     ? 'Sort by Rating'
-        //                     : 'Sort by Votes',
-        //                 style: TextStyle(
-        //                   fontSize: 13.sp,
-        //                   fontWeight: FontWeight.w600,
-        //                 ),
-        //               ),
-        //               const SizedBox(width: 6),
-        //               const Icon(Icons.keyboard_arrow_down),
-        //             ],
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
+
+         //Sort Button Widge
+        Align(
+          alignment: Alignment.centerLeft,
+          child: SizedBox(
+            width: isLandscape ? 0.45.sw : 0.50.sw,
+            height: isLandscape ? 0.20.sh : 60.h,
+            child: GestureDetector(
+              onTap: () => ctrl.sortByRating.value = !ctrl.sortByRating.value,
+              child: Obx(
+                () => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: themeController.isDarkModeValue
+                          ? Colors.grey[800]!
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(
+                            alpha: themeController.isDarkModeValue ? 0.3 : 0.10,
+                          ),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.sort, size: 18.sp),
+                        const SizedBox(width: 8),
+                        Text(
+                          ctrl.sortByRating.value
+                              ? 'Sort by Rating'
+                              : 'Sort by Votes',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        const Icon(Icons.keyboard_arrow_down),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -358,10 +359,25 @@ class IdeaCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 4.h),
+                    Text(
+                      idea.tagline,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
                     ReadMoreText(
                       text: idea.description.toString(),
-                      maxLines: 2,
-                      style: TextStyle(fontSize: 14.sp, color: Colors.white),
+                      maxLines: 4,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: 8.h),
                     Row(
