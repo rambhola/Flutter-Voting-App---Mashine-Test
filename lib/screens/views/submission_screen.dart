@@ -111,7 +111,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(height: 100.h),
+                      SizedBox(height: 30.h),
                       Container(
                         width: 0.9.sw,
                         constraints: BoxConstraints(maxHeight: 0.7.sh),
@@ -185,7 +185,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: 16.h),
                       Padding(
                         padding: EdgeInsets.only(bottom: 18.h),
                         child: SizedBox(

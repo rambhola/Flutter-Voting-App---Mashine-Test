@@ -396,23 +396,45 @@ class IdeaCard extends StatelessWidget {
                 ),
               ),
 
-              /// FAVORITE (Reactive)
-              GestureDetector(
-                onTap: onFavorite,
-                child: Container(
-                  width: 48.w,
-                  height: 48.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: idea.isFavorite
-                        ? Colors.red.withValues(alpha: 0.3)
-                        : Colors.white.withValues(alpha: 0.25),
+              /// Delete Button (Reactive)
+              Column(
+                children: [
+                  GestureDetector(
+                    onTap: () => ct.deleteIdea(idea),
+                    child: Container(
+                      height: 48.h,
+                      width: 48.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withValues(alpha: 0.25),
+                        border: Border.all(color: Colors.white, width: 1),
+                      ),
+                      child: Icon(Icons.delete, color: Colors.red),
+                    ),
                   ),
-                  child: Icon(
-                    idea.isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: idea.isFavorite ? Colors.red : Colors.white,
+                  SizedBox(height: 20.h),
+
+                  /// FAVORITE (Reactive)
+                  GestureDetector(
+                    onTap: onFavorite,
+                    child: Container(
+                      width: 48.w,
+                      height: 48.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: idea.isFavorite
+                            ? Colors.red.withValues(alpha: 0.3)
+                            : Colors.white.withValues(alpha: 0.25),
+                      ),
+                      child: Icon(
+                        idea.isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: idea.isFavorite ? Colors.red : Colors.white,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),

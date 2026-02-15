@@ -4,7 +4,6 @@ import 'package:hive_flutter/adapters.dart';
 import '../model/idea_model.dart';
 
 class IdeaController extends GetxController {
-
   late Box<IdeaModel> ideaBox;
 
   final RxList<IdeaModel> ideas = <IdeaModel>[].obs;
@@ -18,7 +17,7 @@ class IdeaController extends GetxController {
   void onInit() {
     super.onInit();
 
-    // ✅ GET ALREADY OPENED BOX
+    // GET ALREADY OPENED BOX
     ideaBox = Hive.box<IdeaModel>('ideasBox');
 
     loadIdeas();
@@ -37,14 +36,18 @@ class IdeaController extends GetxController {
     await ideaBox.add(idea);
   }
 
-  Future<void> deleteIdea(IdeaModel idea) async {
+  //Hive DB Permanently delete
+  Future<void> deleteIdea(IdeaModel idea)async {
     await idea.delete();
   }
 
   Future<void> toggleFavorite(IdeaModel idea) async {
     idea.isFavorite = !idea.isFavorite;
     await idea.save();
+
   }
+
+
 
   Future<void> upvoteIdea(IdeaModel idea) async {
     if (votedIdeas.contains(idea.key.toString())) {

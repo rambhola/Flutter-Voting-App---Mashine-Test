@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
 part 'idea_model.g.dart';
@@ -30,6 +29,9 @@ class IdeaModel extends HiveObject {
 
   @HiveField(7)
   String badge;
+
+
+
 
   IdeaModel({
     required this.title,
