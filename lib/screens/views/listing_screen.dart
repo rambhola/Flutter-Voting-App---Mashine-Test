@@ -1,12 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/idea_controller.dart';
+import '../../model/idea_model.dart';
 import '../../theme/views model/theme_controller.dart';
 import '../../theme/views/setting_page.dart';
 import '../../widgets/read_more_text.dart';
-import '../views_model/idea_controller.dart';
 
 class ListingScreen extends StatelessWidget {
   const ListingScreen({super.key});
@@ -170,8 +170,8 @@ class _SearchAndSortBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-       //  Search Bar Widget
-        SizedBox(height: 12.h,),
+        //  Search Bar Widget
+        SizedBox(height: 12.h),
 
         Align(
           alignment: Alignment.center,
@@ -219,8 +219,7 @@ class _SearchAndSortBar extends StatelessWidget {
           ),
         ),
 
-
-         //Sort Button Widge
+        //Sort Button Widget
         Align(
           alignment: Alignment.centerLeft,
           child: SizedBox(
@@ -294,14 +293,10 @@ class IdeaCard extends StatelessWidget {
     required this.onFavorite,
   });
 
-  final ThemeController themeController = Get.find();
+  final IdeaController ct = Get.find<IdeaController>();
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      debugPrint("Idea: ${idea.title}");
-    }
-
     return GestureDetector(
       onTap: () => ScaffoldMessenger.of(
         context,
@@ -323,7 +318,7 @@ class IdeaCard extends StatelessWidget {
           padding: EdgeInsets.all(16.w),
           child: Row(
             children: [
-              // Index Circle
+              /// INDEX
               Container(
                 width: 48.w,
                 height: 48.w,
@@ -343,7 +338,7 @@ class IdeaCard extends StatelessWidget {
 
               SizedBox(width: 12.w),
 
-              // Content
+              /// CONTENT
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -358,7 +353,9 @@ class IdeaCard extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
+
                     SizedBox(height: 4.h),
+
                     Text(
                       idea.tagline,
                       maxLines: 1,
@@ -369,9 +366,11 @@ class IdeaCard extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
+
                     SizedBox(height: 4.h),
+
                     ReadMoreText(
-                      text: idea.description.toString(),
+                      text: idea.description,
                       maxLines: 4,
                       style: TextStyle(
                         fontSize: 14.sp,
@@ -379,19 +378,25 @@ class IdeaCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+
                     SizedBox(height: 8.h),
-                    Row(
+
+                    /// VOTES ROW (Reactive)
+                    Wrap(
+                      spacing: 8.w,
                       children: [
                         _badge('⭐ ${idea.score}/100'),
-                        SizedBox(width: 8.w),
-                        _badge('👍 ${idea.votes}'),
+                        InkWell(
+                          onTap: () => ct.upvoteIdea(idea),
+                          child: _badge('👍 ${idea.votes}'),
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
 
-              // Favorite Button
+              /// FAVORITE (Reactive)
               GestureDetector(
                 onTap: onFavorite,
                 child: Container(
@@ -400,15 +405,12 @@ class IdeaCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: idea.isFavorite
-                        ? Colors.red.withValues(alpha: 0.30)
+                        ? Colors.red.withValues(alpha: 0.3)
                         : Colors.white.withValues(alpha: 0.25),
                   ),
-                  child: Center(
-                    child: Icon(
-                      idea.isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: idea.isFavorite ? Colors.red : Colors.white,
-                      size: 22.sp,
-                    ),
+                  child: Icon(
+                    idea.isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: idea.isFavorite ? Colors.red : Colors.white,
                   ),
                 ),
               ),

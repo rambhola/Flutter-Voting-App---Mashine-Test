@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../views_model/idea_controller.dart';
+import '../../controllers/idea_controller.dart';
+import '../../model/idea_model.dart';
 
 class LeaderboardScreen extends StatelessWidget {
   const LeaderboardScreen({super.key});
@@ -22,12 +23,11 @@ class LeaderboardScreen extends StatelessWidget {
         ),
         child: SafeArea(
           child: Obx(() {
-            /// Sort ideas by score
             final sortedIdeas = List<IdeaModel>.from(controller.ideas)
               ..sort((a, b) => b.score.compareTo(a.score));
 
             final top5 = sortedIdeas.take(5).toList();
-            final others = sortedIdeas.skip(5).take(10).toList();
+            final others = sortedIdeas.skip(5).toList();
 
             return LayoutBuilder(
               builder: (context, constraints) {
@@ -37,24 +37,19 @@ class LeaderboardScreen extends StatelessWidget {
                 return SingleChildScrollView(
                   padding: EdgeInsets.all(16.w),
                   child: Column(
-                    crossAxisAlignment: isLandscape
-                        ? CrossAxisAlignment.center
-                        : CrossAxisAlignment.start,
-
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      /// ================= HEADER =================
                       _Header(),
 
                       SizedBox(height: 24.h),
 
-                      /// ================= PODIUM =================
+                      // Top 5 Podium
                       ...top5.asMap().entries.map((entry) {
                         final index = entry.key;
                         final idea = entry.value;
-
                         return Padding(
                           padding: EdgeInsets.only(bottom: 16.h),
-                          child: NeumorphicCard(
+                          child: PodiumCard(
                             idea: idea,
                             rank: index + 1,
                             badge: ['🥇', '🥈', '🥉', '🏅', '🎖️'][index],
@@ -71,7 +66,6 @@ class LeaderboardScreen extends StatelessWidget {
 
                       SizedBox(height: 24.h),
 
-                      /// ================= OTHER STARTUPS =================
                       Text(
                         'Other Startups',
                         style: TextStyle(
@@ -80,11 +74,10 @@ class LeaderboardScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-
                       SizedBox(height: 12.h),
 
                       SizedBox(
-                        height: 120.h,
+                        height: 140.h,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: others.length,
@@ -108,7 +101,7 @@ class LeaderboardScreen extends StatelessWidget {
   }
 }
 
-/// ================= HEADER WIDGET =================
+/// Header widget
 class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -134,14 +127,14 @@ class _Header extends StatelessWidget {
   }
 }
 
-/// ================= PODIUM CARD =================
-class NeumorphicCard extends StatelessWidget {
+/// Podium Card (Top 5)
+class PodiumCard extends StatelessWidget {
   final IdeaModel idea;
   final int rank;
   final String badge;
   final Color medalColor;
 
-  const NeumorphicCard({
+  const PodiumCard({
     super.key,
     required this.idea,
     required this.rank,
@@ -151,17 +144,18 @@ class NeumorphicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final IdeaController controller = Get.find<IdeaController>();
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final isLandscape = screenWidth > screenHeight;
     final cardHeight = isLandscape ? screenHeight * 0.6 : screenHeight * 0.16;
 
     return GestureDetector(
-      onTap: () => Get.find<IdeaController>().voteIdea(idea),
+      onTap: () => controller.upvoteIdea(controller.ideas.reversed.first),
       child: Container(
         height: cardHeight,
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.1),
+          color: Colors.white.withOpacity(0.1),
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             const BoxShadow(
@@ -170,7 +164,7 @@ class NeumorphicCard extends StatelessWidget {
               offset: Offset(5, 5),
             ),
             BoxShadow(
-              color: Colors.white.withValues(alpha: 0.1),
+              color: Colors.white.withOpacity(0.1),
               blurRadius: 10,
               offset: const Offset(-5, -5),
             ),
@@ -182,7 +176,7 @@ class NeumorphicCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                color: medalColor.withValues(alpha: 0.3),
+                color: medalColor.withOpacity(0.3),
                 shape: BoxShape.circle,
               ),
               child: Text(badge, style: TextStyle(fontSize: 24.sp)),
@@ -193,11 +187,16 @@ class NeumorphicCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('#$rank', style: TextStyle(fontSize: 14.sp, color: Colors.white70)),
+                  Text('#$rank',
+                      style: TextStyle(fontSize: 14.sp, color: Colors.white70)),
                   SizedBox(height: 4.h),
                   Text(
                     idea.title,
-                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -206,7 +205,10 @@ class NeumorphicCard extends StatelessWidget {
                     children: [
                       Icon(Icons.thumb_up, color: Colors.white70, size: 16.sp),
                       SizedBox(width: 4.w),
-                      Text('${idea.votes} votes', style: TextStyle(color: Colors.white70)),
+                      Text(
+                        '${idea.votes} votes',
+                        style: TextStyle(color: Colors.white70),
+                      ),
                     ],
                   ),
                 ],
@@ -220,7 +222,7 @@ class NeumorphicCard extends StatelessWidget {
   }
 }
 
-/// ================= OTHER STARTUP CARD =================
+/// Other Startup Card
 class OtherStartupCard extends StatelessWidget {
   final IdeaModel idea;
 
@@ -228,14 +230,15 @@ class OtherStartupCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final IdeaController controller = Get.find<IdeaController>();
     return GestureDetector(
-      onTap: () => Get.find<IdeaController>().voteIdea(idea),
+      onTap: () => controller.upvoteIdea(controller.ideas.indexOf(idea) as IdeaModel),
       child: Container(
         width: 140.w,
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.purple.shade400, Colors.purple.shade700],
+            colors: idea.gradient.colors,
           ),
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: const [
@@ -264,17 +267,14 @@ class OtherStartupCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('${idea.votes}', style: TextStyle(color: Colors.white70)),
-                Text(
-                  idea.badge ?? '⭐', // Removed ?? since badge should be non-nullable
-                  style: TextStyle(fontSize: 20.sp),
-                ),
+                Text(idea.badge, style: TextStyle(fontSize: 20.sp)),
               ],
             ),
             SizedBox(height: 4.h),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
               decoration: BoxDecoration(
-                color: Colors.amber.withValues(alpha: 0.3),
+                color: Colors.amber.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Text(
