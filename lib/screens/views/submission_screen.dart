@@ -36,6 +36,11 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
   Widget build(BuildContext context) {
     final themeController = Get.find<ThemeController>();
 
+    // //MediaQuery Initialization Make your submission screen responsive using MediaQuery
+    final media = MediaQuery.of(context);
+    final screenWidth = media.size.width;
+    final screenHeight = media.size.height;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         bool isLandscape = constraints.maxWidth > constraints.maxHeight;
@@ -43,7 +48,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             title: SizedBox(
-              width: isLandscape ? 0.45.sw : 0.65.sw,
+              width: isLandscape ? screenWidth * 0.45 : screenWidth * 0.65,
               height: 0.2.sh,
               child: FittedBox(
                 fit: BoxFit.scaleDown,
@@ -111,10 +116,13 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(height: 30.h),
+                      SizedBox(height: screenHeight * 0.07),
+
                       Container(
-                        width: 0.9.sw,
-                        constraints: BoxConstraints(maxHeight: 0.7.sh),
+                        width: screenWidth * 0.9,
+                        constraints: BoxConstraints(
+                          maxHeight: screenHeight * 0.6,
+                        ),
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
                           color: themeController.isDarkModeValue
@@ -129,7 +137,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                           ),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(24.w),
+                          padding: EdgeInsets.all(screenWidth * 0.05),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -150,8 +158,9 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                     borderRadius: BorderRadius.circular(12.r),
                                   ),
                                 ),
-                                validator: (value) =>
-                                value?.isEmpty ?? true ? 'Name required' : null,
+                                validator: (value) => value?.isEmpty ?? true
+                                    ? 'Name required'
+                                    : null,
                               ),
                               SizedBox(height: 16.h),
                               TextFormField(
@@ -163,8 +172,9 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                     borderRadius: BorderRadius.circular(12.r),
                                   ),
                                 ),
-                                validator: (value) =>
-                                value?.isEmpty ?? true ? 'Tagline required' : null,
+                                validator: (value) => value?.isEmpty ?? true
+                                    ? 'Tagline required'
+                                    : null,
                               ),
                               SizedBox(height: 16.h),
                               TextFormField(
@@ -189,7 +199,9 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                       Padding(
                         padding: EdgeInsets.only(bottom: 18.h),
                         child: SizedBox(
-                          width: isLandscape ? 0.55.sw : 0.85.sw,
+                          width: isLandscape
+                              ? screenWidth * 0.55
+                              : screenWidth * 0.85,
                           height: isLandscape ? 56.h : 64.h,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -202,8 +214,8 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 final alreadyExists = ctr.ideas.any(
-                                      (e) =>
-                                  e.title.toLowerCase() ==
+                                  (e) =>
+                                      e.title.toLowerCase() ==
                                       nameController.text.trim().toLowerCase(),
                                 );
 

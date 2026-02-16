@@ -168,6 +168,10 @@ class _SearchAndSortBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // //MediaQuery Initialization Make your idea listing screen responsive using MediaQuery
+    final media = MediaQuery.of(context);
+    final screenWidth = media.size.width;
+    final screenHeight = media.size.height;
     return Column(
       children: [
         //  Search Bar Widget
@@ -176,7 +180,7 @@ class _SearchAndSortBar extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: SizedBox(
-            width: isLandscape ? 0.70.sw : 0.90.sw,
+            width: isLandscape ? screenWidth * 0.7 : screenWidth * 0.9,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
               decoration: BoxDecoration(
@@ -224,7 +228,8 @@ class _SearchAndSortBar extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: SizedBox(
             width: isLandscape ? 0.45.sw : 0.50.sw,
-            height: isLandscape ? 0.20.sh : 60.h,
+            height: isLandscape ? screenHeight * 0.12 : 60,
+
             child: GestureDetector(
               onTap: () => ctrl.sortByRating.value = !ctrl.sortByRating.value,
               child: Obx(
@@ -297,6 +302,11 @@ class IdeaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+
+    final screenHeight = media.size.width;
+    final screenWidth = media.size.height;
+
     return GestureDetector(
       onTap: () => ScaffoldMessenger.of(
         context,
@@ -398,12 +408,14 @@ class IdeaCard extends StatelessWidget {
 
               /// Delete Button (Reactive)
               Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   GestureDetector(
                     onTap: () => ct.deleteIdea(idea),
                     child: Container(
-                      height: 48.h,
-                      width: 48.w,
+                      height: screenHeight * 0.14,
+                      width: screenWidth * 0.14,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white.withValues(alpha: 0.25),
@@ -412,19 +424,20 @@ class IdeaCard extends StatelessWidget {
                       child: Icon(Icons.delete, color: Colors.red),
                     ),
                   ),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 15.h),
 
                   /// FAVORITE (Reactive)
                   GestureDetector(
                     onTap: onFavorite,
                     child: Container(
-                      width: 48.w,
-                      height: 48.w,
+                      height: screenHeight * 0.14,
+                      width: screenWidth * 0.14,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: idea.isFavorite
                             ? Colors.red.withValues(alpha: 0.3)
                             : Colors.white.withValues(alpha: 0.25),
+                        border: Border.all(color: Colors.white, width: 1),
                       ),
                       child: Icon(
                         idea.isFavorite
