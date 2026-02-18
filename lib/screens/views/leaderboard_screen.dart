@@ -12,89 +12,91 @@ class LeaderboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final IdeaController controller = Get.find<IdeaController>();
 
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF8B5CF6), Color(0xFF6B46C1), Color(0xFF553C9A)],
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF8B5CF6), Color(0xFF6B46C1), Color(0xFF553C9A)],
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Obx(() {
-            final sortedIdeas = List<IdeaModel>.from(controller.ideas)
-              ..sort((a, b) => b.score.compareTo(a.score));
+          child: SafeArea(
+            child: Obx(() {
+              final sortedIdeas = List<IdeaModel>.from(controller.ideas)
+                ..sort((a, b) => b.score.compareTo(a.score));
 
-            final top5 = sortedIdeas.take(5).toList();
-            final others = sortedIdeas.skip(5).toList();
+              final top5 = sortedIdeas.take(5).toList();
+              final others = sortedIdeas.skip(5).toList();
 
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                final bool isLandscape =
-                    constraints.maxWidth > constraints.maxHeight;
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  final bool isLandscape =
+                      constraints.maxWidth > constraints.maxHeight;
 
-                return SingleChildScrollView(
-                  padding: EdgeInsets.all(16.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _Header(),
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.all(16.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _Header(),
 
-                      SizedBox(height: 24.h),
+                        SizedBox(height: 24.h),
 
-                      // Top 5 Podium
-                      ...top5.asMap().entries.map((entry) {
-                        final index = entry.key;
-                        final idea = entry.value;
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 16.h),
-                          child: PodiumCard(
-                            idea: idea,
-                            rank: index + 1,
-                            badge: ['🥇', '🥈', '🥉', '🏅', '🎖️'][index],
-                            medalColor: [
-                              Colors.amber,
-                              Colors.orange,
-                              Colors.purpleAccent,
-                              Colors.blueAccent,
-                              Colors.green,
-                            ][index],
+                        // Top 5 Podium
+                        ...top5.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final idea = entry.value;
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 16.h),
+                            child: PodiumCard(
+                              idea: idea,
+                              rank: index + 1,
+                              badge: ['🥇', '🥈', '🥉', '🏅', '🎖️'][index],
+                              medalColor: [
+                                Colors.amber,
+                                Colors.orange,
+                                Colors.purpleAccent,
+                                Colors.blueAccent,
+                                Colors.green,
+                              ][index],
+                            ),
+                          );
+                        }),
+
+                        SizedBox(height: 24.h),
+
+                        Text(
+                          'Other Startups',
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
-                        );
-                      }),
-
-                      SizedBox(height: 24.h),
-
-                      Text(
-                        'Other Startups',
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
                         ),
-                      ),
-                      SizedBox(height: 12.h),
+                        SizedBox(height: 12.h),
 
-                      SizedBox(
-                        height: 140.h,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: others.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(right: 12.w),
-                              child: OtherStartupCard(idea: others[index]),
-                            );
-                          },
+                        SizedBox(
+                          height: 140.h,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: others.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(right: 12.w),
+                                child: OtherStartupCard(idea: others[index]),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          }),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }),
+          ),
         ),
       ),
     );
@@ -187,8 +189,10 @@ class PodiumCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('#$rank',
-                      style: TextStyle(fontSize: 14.sp, color: Colors.white70)),
+                  Text(
+                    '#$rank',
+                    style: TextStyle(fontSize: 14.sp, color: Colors.white70),
+                  ),
                   SizedBox(height: 4.h),
                   Text(
                     idea.title,
@@ -232,14 +236,13 @@ class OtherStartupCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final IdeaController controller = Get.find<IdeaController>();
     return GestureDetector(
-      onTap: () => controller.upvoteIdea(controller.ideas.indexOf(idea) as IdeaModel),
+      onTap: () =>
+          controller.upvoteIdea(controller.ideas.indexOf(idea) as IdeaModel),
       child: Container(
         width: 140.w,
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: idea.gradient.colors,
-          ),
+          gradient: LinearGradient(colors: idea.gradient.colors),
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: const [
             BoxShadow(

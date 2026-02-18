@@ -21,6 +21,14 @@ class _ReadMoreTextState extends State<ReadMoreText> {
 
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+
+    final screenWidth = media.size.width;
+    final screenHeight = media.size.height;
+
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final textPainter = TextPainter(
@@ -43,13 +51,43 @@ class _ReadMoreTextState extends State<ReadMoreText> {
                   : TextOverflow.ellipsis,
             ),
             if (isOverflowing)
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 4),
+              //   child: ElevatedButton(
+              //     onPressed: () {
+              //       setState(() => isExpanded = !isExpanded);
+              //     },
+              //     child: isExpanded ? Text(" Read Less") : Text("Read More"),
+              //   ),
+              // ),
               Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: ElevatedButton(
-                  onPressed: () {
+                padding: EdgeInsetsGeometry.only(top: 4),
+                child: InkWell(
+                  onTap: () {
                     setState(() => isExpanded = !isExpanded);
                   },
-                  child: isExpanded ? Text(" Read Less") : Text("Read More"),
+                  child: Container(
+                    height: isLandscape
+                        ? screenHeight * 0.07
+                        : screenHeight * 0.03,
+                    width: isLandscape ? screenWidth * 0.2 : screenWidth * 0.4,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.yellow, width: 1),
+                    ),
+                    child: Center(
+                      child: isExpanded
+                          ? Text(
+                              "Read Less ",
+                              style: TextStyle(color: Colors.white),
+                            )
+                          : Text(
+                              "Read More",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                    ),
+                  ),
                 ),
               ),
           ],
