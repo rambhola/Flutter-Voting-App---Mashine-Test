@@ -19,7 +19,10 @@ class LeaderboardScreen extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xFF8B5CF6), Color(0xFF6B46C1), Color(0xFF553C9A)],
+              colors: [
+                Color(0xFF764BA2),
+                const Color(0xFF667EEA),
+              ],
             ),
           ),
           child: SafeArea(
@@ -151,7 +154,7 @@ class PodiumCard extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final isLandscape = screenWidth > screenHeight;
     final cardHeight = isLandscape ? screenHeight * 0.6 : screenHeight * 0.16;
-
+    final IdeaController ct = Get.find<IdeaController>();
     return GestureDetector(
       onTap: () => controller.upvoteIdea(controller.ideas.reversed.first),
       child: Container(
@@ -218,7 +221,40 @@ class PodiumCard extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward_ios, color: Colors.white70, size: 16.sp),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () => ct.deleteIdea(idea),
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 15.r),
+                    height: isLandscape
+                        ? screenHeight * 0.07
+                        : screenHeight * 0.07,
+                    width: isLandscape
+                        ? screenWidth * 0.12
+                        : screenHeight * 0.14,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.black26,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 5.5,
+                          offset: Offset (0,2),
+
+                        )
+                      ],
+
+                      border: Border.all(color: Colors.white, width: 1),
+                    ),
+                    child: const Icon(Icons.delete, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

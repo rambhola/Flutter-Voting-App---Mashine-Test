@@ -148,7 +148,7 @@ class IdeaCard extends StatelessWidget {
                           : screenHeight * 0.14,
                       width: isLandscape
                           ? screenWidth * 0.12
-                          : screenHeight * 0.14,
+                          : screenHeight * 0.12,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white.withValues(alpha: 0.25),

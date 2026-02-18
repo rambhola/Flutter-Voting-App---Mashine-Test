@@ -71,7 +71,7 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                     child: Icon(
                       Icons.more_vert,
                       color: Colors.white,
-                      size: 26.sp,
+                      size: isLandscape ? 16.sp : 26.sp,
                     ),
                   ),
                   itemBuilder: (_) => [
@@ -114,10 +114,12 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                         SizedBox(height: screenHeight * 0.07),
 
                         Container(
-                          width: screenWidth * 0.9,
-                          constraints: BoxConstraints(
-                            maxHeight: screenHeight * 0.6,
-                          ),
+                          width: isLandscape
+                              ? screenWidth * 0.9
+                              : screenWidth * 0.9,
+                          height: isLandscape
+                              ? screenHeight * 0.6
+                              : screenHeight * 0.6,
                           clipBehavior: Clip.hardEdge,
                           decoration: BoxDecoration(
                             color: themeController.isDarkModeValue
@@ -134,7 +136,6 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                           child: Padding(
                             padding: EdgeInsets.all(screenWidth * 0.05),
                             child: SingleChildScrollView(
-                              
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
                                 child: Column(
@@ -156,10 +157,13 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                           Icons.business_center,
                                         ),
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12.r),
+                                          borderRadius: BorderRadius.circular(
+                                            12.r,
+                                          ),
                                         ),
                                       ),
-                                      validator: (value) => value?.isEmpty ?? true
+                                      validator: (value) =>
+                                          value?.isEmpty ?? true
                                           ? 'Name required'
                                           : null,
                                     ),
@@ -168,12 +172,17 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                       controller: taglineController,
                                       decoration: InputDecoration(
                                         labelText: "Tagline",
-                                        prefixIcon: const Icon(Icons.format_quote),
+                                        prefixIcon: const Icon(
+                                          Icons.format_quote,
+                                        ),
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12.r),
+                                          borderRadius: BorderRadius.circular(
+                                            12.r,
+                                          ),
                                         ),
                                       ),
-                                      validator: (value) => value?.isEmpty ?? true
+                                      validator: (value) =>
+                                          value?.isEmpty ?? true
                                           ? 'Tagline required'
                                           : null,
                                     ),
@@ -183,12 +192,17 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                                       maxLines: 4,
                                       decoration: InputDecoration(
                                         labelText: "Description",
-                                        prefixIcon: const Icon(Icons.description),
+                                        prefixIcon: const Icon(
+                                          Icons.description,
+                                        ),
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12.r),
+                                          borderRadius: BorderRadius.circular(
+                                            12.r,
+                                          ),
                                         ),
                                       ),
-                                      validator: (value) => value?.isEmpty ?? true
+                                      validator: (value) =>
+                                          value?.isEmpty ?? true
                                           ? 'Description required'
                                           : null,
                                     ),
@@ -203,9 +217,11 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
                           padding: EdgeInsets.only(bottom: 18.h),
                           child: SizedBox(
                             width: isLandscape
-                                ? screenWidth * 0.55
+                                ? screenWidth * 0.85
                                 : screenWidth * 0.85,
-                            height: isLandscape ? 56.h : 64.h,
+                            height: isLandscape
+                                ? screenHeight * 0.20
+                                : screenHeight * 0.07,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFFFF6B35),
