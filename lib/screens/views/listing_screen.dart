@@ -38,7 +38,7 @@ class ListingScreen extends StatelessWidget {
                       maxLines: 1,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: isLandscape ? 18.sp : 22.sp,
+                        fontSize: isLandscape ? 18.sp : 28.sp,
                         fontWeight: FontWeight.bold,
                         height: 1.15,
                       ),

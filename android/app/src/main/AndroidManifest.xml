@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="the_statup_idea_evaluator_ai_votting_app"
+        android:label="Startup Idea Rank"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

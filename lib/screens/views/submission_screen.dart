@@ -50,17 +50,17 @@ class _SubmissionScreenState extends State<SubmissionScreen> {
             appBar: AppBar(
               toolbarHeight: 80,
               title: Text(
-                "Startup Idea\nEvaluator AI Voting App",
+                "Startup Idea Rank",
                 textAlign: TextAlign.center,
-                maxLines: 2,
+                maxLines: 1,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: isLandscape ? 12.sp : 22.sp,
+                  fontSize: isLandscape ? 12.sp : 28.sp,
                   fontWeight: FontWeight.bold,
                   height: 1.15,
                 ),
               ),
-              elevation: 0,
+              elevation: 10,
               actions: [
                 PopupMenuButton(
                   shape: RoundedRectangleBorder(

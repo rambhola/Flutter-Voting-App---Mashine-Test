@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:the_statup_idea_evaluator_ai_votting_app/navbar/views_model/nav_controller.dart';
 import 'package:get/get.dart';
-import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/leaderboard_screen.dart';
-import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/listing_screen.dart';
-import 'package:the_statup_idea_evaluator_ai_votting_app/screens/views/submission_screen.dart';
+
+import '../../screens/views/leaderboard_screen.dart';
+import '../../screens/views/listing_screen.dart';
+import '../../screens/views/submission_screen.dart';
+import '../views_model/nav_controller.dart';
+
 
 class BottomNavScreen extends StatelessWidget {
   final int? navIndex;
