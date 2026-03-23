@@ -1,10 +1,11 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+         package="com.rambhola.startup.idea.rank">
     <application
         android:label="Startup Idea Rank"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
-            android:name=".MainActivity"
+            android:name="com.rambhola.startup.idea.rank.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:taskAffinity=""

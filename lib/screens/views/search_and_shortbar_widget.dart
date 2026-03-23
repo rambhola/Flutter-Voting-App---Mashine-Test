@@ -39,8 +39,8 @@ class SearchAndSortBar extends StatelessWidget {
                 borderRadius: BorderRadius.circular(22.r),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(
-                      themeController.isDarkModeValue ? 0.25 : 0.08,
+                    color: Colors.black.withValues(
+                      alpha: (themeController.isDarkModeValue ? 0.25 : 0.08),
                     ),
                     blurRadius: 6,
                   ),
@@ -92,10 +92,8 @@ class SearchAndSortBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(22.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(
-                        themeController.isDarkModeValue
-                            ? 0.25
-                            : 0.08,
+                      color: Colors.black.withValues(
+                        alpha: (themeController.isDarkModeValue ? 0.25 : 0.08),
                       ),
                       blurRadius: 6,
                     ),

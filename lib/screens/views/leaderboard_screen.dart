@@ -12,94 +12,91 @@ class LeaderboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final IdeaController controller = Get.find<IdeaController>();
 
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF764BA2),
-                const Color(0xFF667EEA),
-              ],
-            ),
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF764BA2),
+               Color(0xFF667EEA),
+            ],
           ),
-          child: SafeArea(
-            child: Obx(() {
-              final sortedIdeas = List<IdeaModel>.from(controller.ideas)
-                ..sort((a, b) => b.score.compareTo(a.score));
+        ),
+        child: SafeArea(
+          child: Obx(() {
+            final sortedIdeas = List<IdeaModel>.from(controller.ideas)
+              ..sort((a, b) => b.score.compareTo(a.score));
 
-              final top5 = sortedIdeas.take(5).toList();
-              final others = sortedIdeas.skip(5).toList();
+            final top5 = sortedIdeas.take(5).toList();
+            final others = sortedIdeas.skip(5).toList();
 
-              return LayoutBuilder(
-                builder: (context, constraints) {
-                  final bool isLandscape =
-                      constraints.maxWidth > constraints.maxHeight;
+            return LayoutBuilder(
+              builder: (context, constraints) {
 
-                  return SingleChildScrollView(
-                    padding: EdgeInsets.all(16.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _Header(),
 
-                        SizedBox(height: 24.h),
+                return SingleChildScrollView(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _Header(),
 
-                        // Top 5 Podium
-                        ...top5.asMap().entries.map((entry) {
-                          final index = entry.key;
-                          final idea = entry.value;
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: 16.h),
-                            child: PodiumCard(
-                              idea: idea,
-                              rank: index + 1,
-                              badge: ['🥇', '🥈', '🥉', '🏅', '🎖️'][index],
-                              medalColor: [
-                                Colors.amber,
-                                Colors.orange,
-                                Colors.purpleAccent,
-                                Colors.blueAccent,
-                                Colors.green,
-                              ][index],
-                            ),
-                          );
-                        }),
+                      SizedBox(height: 24.h),
 
-                        SizedBox(height: 24.h),
-
-                        Text(
-                          'Other Startups',
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                      // Top 5 Podium
+                      ...top5.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final idea = entry.value;
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 16.h),
+                          child: PodiumCard(
+                            idea: idea,
+                            rank: index + 1,
+                            badge: ['🥇', '🥈', '🥉', '🏅', '🎖️'][index],
+                            medalColor: [
+                              Colors.amber,
+                              Colors.orange,
+                              Colors.purpleAccent,
+                              Colors.blueAccent,
+                              Colors.green,
+                            ][index],
                           ),
-                        ),
-                        SizedBox(height: 12.h),
+                        );
+                      }),
 
-                        SizedBox(
-                          height: 140.h,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: others.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.only(right: 12.w),
-                                child: OtherStartupCard(idea: others[index]),
-                              );
-                            },
-                          ),
+                      SizedBox(height: 24.h),
+
+                      Text(
+                        'Other Startups',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            }),
-          ),
+                      ),
+                      SizedBox(height: 12.h),
+
+                      SizedBox(
+                        height: 140.h,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: others.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.only(right: 12.w),
+                              child: OtherStartupCard(idea: others[index]),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          }),
         ),
       ),
     );
@@ -160,7 +157,7 @@ class PodiumCard extends StatelessWidget {
       child: Container(
         height: cardHeight,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             const BoxShadow(
@@ -169,7 +166,7 @@ class PodiumCard extends StatelessWidget {
               offset: Offset(5, 5),
             ),
             BoxShadow(
-              color: Colors.white.withOpacity(0.1),
+              color: Colors.white.withValues(alpha: 0.1),
               blurRadius: 10,
               offset: const Offset(-5, -5),
             ),
@@ -181,7 +178,7 @@ class PodiumCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                color: medalColor.withOpacity(0.3),
+                color: medalColor.withValues(alpha: 0.3),
                 shape: BoxShape.circle,
               ),
               child: Text(badge, style: TextStyle(fontSize: 24.sp)),
@@ -313,7 +310,7 @@ class OtherStartupCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
               decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.3),
+                color: Colors.amber.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(10.r),
               ),
               child: Text(

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'controllers/idea_controller.dart';
-import 'model/idea_model.dart';
+import 'model/idea_model.dart'; 
 import 'navbar/views/bottom_nav.dart';
 import 'navbar/views_model/nav_controller.dart';
 import 'theme/views model/theme_controller.dart';
